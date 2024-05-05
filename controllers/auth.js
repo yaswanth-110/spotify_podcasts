@@ -4,18 +4,31 @@ const bcrypt = require("bcrypt");
 
 const jwt = require("jsonwebtoken");
 
+const { validationResult } = require("express-validator");
+
 exports.signup = async (req, res, next) => {
   try {
     const email = req.body.email;
     const password = req.body.password;
+    const name = req.body.name;
     const username = req.body.username;
+
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      const error = new Error("validation failed");
+      error.statusCode = 400;
+      error.data = errors.array();
+      throw error;
+    }
 
     const hashPassword = await bcrypt.hash(password, 12);
     const user = new User({
       email: email,
       password: hashPassword,
+      name: name,
       username: username,
-      isAdmin: "user",
+      userType: "user",
     });
     const userDoc = await user.save();
     res.status(200).json({
@@ -23,8 +36,10 @@ exports.signup = async (req, res, next) => {
       userId: userDoc._id,
     });
   } catch (err) {
-    console.log(err);
-    next();
+    if (!err.statusCode) {
+      err.statusCode = 500;
+    }
+    next(err);
   }
 };
 
@@ -69,6 +84,9 @@ exports.login = async (req, res, next) => {
     }
   } catch (err) {
     console.log(err);
-    // next();
+    if (!err.statusCode) {
+      err.statusCode = 500;
+    }
+    next(err);
   }
 };

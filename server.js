@@ -55,6 +55,15 @@ app.use("/files", express.static(path.join(__dirname, "Files")));
 app.use("/auth", authRoutes);
 app.use("/admin", adminRoutes);
 app.use("/home", userRoutes);
+
+//ERROR MIDDLEWARE
+app.use((err, req, res, next) => {
+  const status = err.statusCode || 500;
+  const message = err.message;
+  res.status(status).json({ message: message, err: err });
+});
+
+//CONNECTION TO MONGODB
 mongoose
   .connect(MONGODB_URL)
   .then(() => {
