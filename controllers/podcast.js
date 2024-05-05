@@ -6,7 +6,11 @@ const favPodcast = require("../models/favouriteSchema.js");
 
 exports.getPodcasts = async (req, res, next) => {
   try {
-    const podcasts = await Podcast.find();
+    const number = req.params.number;
+    const SIZE_LIMIT = 10;
+    const podcasts = await Podcast.find()
+      .skip((number - 1) * SIZE_LIMIT)
+      .limit(SIZE_LIMIT);
     if (podcasts.length === 0) {
       res.status(400).json({ message: "No Podcasts are available" });
     }
