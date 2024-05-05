@@ -19,6 +19,7 @@ exports.getPodcasts = async (req, res, next) => {
       .json({ message: "Podcasts retrieved successfully", Podcasts: podcasts });
   } catch (err) {
     console.log(err);
+    next(err);
   }
 };
 
@@ -61,6 +62,7 @@ exports.addPodToFav = async (req, res, next) => {
       .json({ message: "podcast added to favourites successfully" });
   } catch (err) {
     console.log(err);
+    next(err);
   }
 };
 
@@ -78,6 +80,7 @@ exports.getFavPodcasts = async (req, res, next) => {
     }
   } catch (err) {
     console.log(err);
+    next(err);
   }
 };
 
@@ -100,5 +103,25 @@ exports.searchPodcast = async (req, res, next) => {
     });
   } catch (err) {
     console.log(err);
+    next(err);
+  }
+};
+
+//VIEWS COUNT
+
+exports.increaseViewCount = async (req, res, next) => {
+  try {
+    const viewCount = req.params.viewCount;
+    const podcastId = req.params.podcastId;
+    const podcast = await Podcast.findById(podcastId);
+    if (!podcast) {
+      res.status(400).json({ message: "Podcast is not available" });
+    }
+    podcast.views = viewCount + 1;
+    await podcast.save();
+    res.status(200).json({ message: "viewcount increased", podcast: podcast });
+  } catch (err) {
+    console.log(err);
+    next(err);
   }
 };
