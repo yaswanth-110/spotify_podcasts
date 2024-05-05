@@ -21,9 +21,17 @@ const podcastSchema = new Schema(
       type: String,
       required: true,
     },
-    file: {
-      type: Schema.Types.file,
+    thumbnailUrl: {
+      type: String,
       required: true,
+    },
+    fileUrl: {
+      type: String,
+      required: true,
+    },
+    views: {
+      type: Number,
+      default: 0,
     },
   },
   { timestamps: true }

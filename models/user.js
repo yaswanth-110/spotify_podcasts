@@ -16,7 +16,8 @@ const userSchema = new Schema({
     required: true,
   },
   isAdmin: {
-    type: Boolean,
+    type: String,
+    enum: ["user", "admin"],
     required: true,
   },
 });
