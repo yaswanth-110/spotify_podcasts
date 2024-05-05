@@ -1,6 +1,6 @@
 const Podcast = require("../models/podcastDetails.js");
 
-const favPodcast = require("../models/favouriteSchema");
+const favPodcast = require("../models/favouriteSchema.js");
 
 //GET ALL PODCASTS
 

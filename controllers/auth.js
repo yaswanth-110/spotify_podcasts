@@ -32,14 +32,14 @@ exports.login = async (req, res, next) => {
   try {
     const email = req.body.email;
     const password = req.body.password;
-    const isAdmin = req.query.isAdmin;
+    const userType = req.query.userType;
     const user = await User.findOne({ email: email });
     if (!user) {
       const error = new Error("A user with this email could not found ");
       error.statusCode = 401;
       throw error;
     }
-    if (user.isAdmin === isAdmin) {
+    if (user.userType === userType) {
       const isPasswordEqual = await bcrypt.compare(password, user.password);
       if (!isPasswordEqual) {
         const error = new Error("Please enter a valid password");
@@ -58,10 +58,10 @@ exports.login = async (req, res, next) => {
       res.status(200).json({
         token: token,
         userDetails: user,
-        isAdmin: user.isAdmin,
+        userType: user.userType,
       });
     } else {
-      res.status(401).json({ message: "Nor authorized" });
+      res.status(401).json({ message: "Not authorized" });
       const error = new Error("Not authorized");
       error.statusCode = 401;
 

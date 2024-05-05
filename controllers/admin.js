@@ -7,20 +7,25 @@ exports.addPodcast = async (req, res, next) => {
     const category = req.body.category;
     const speaker = req.body.speaker;
     const file = req.file;
+    console.log(file);
     if (!file) {
       const error = new Error("No file is uploaded");
       error.statusCode = 422;
       throw error;
     }
-    const fileUrl = req.file.path("\\", "/");
+    let fileUrl;
+    if (req.file) {
+      fileUrl = req.file.path.replace("\\", "/");
+    }
+    console.log("File URL" + fileUrl);
 
     const podcast = new Podcast({
       podcastName: name,
       description: description,
       category: category,
       speaker: speaker,
-      thumbnailUrl: "",
-      file: fileUrl,
+      thumbnailUrl: " ",
+      fileUrl: fileUrl,
     });
 
     await podcast.save();

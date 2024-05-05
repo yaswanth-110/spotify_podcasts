@@ -14,7 +14,7 @@ const podcastSchema = new Schema(
     },
     category: {
       type: String,
-      enum: ["audio,video"],
+      enum: ["audio", "video"],
       required: true,
     },
     speaker: {
@@ -23,7 +23,6 @@ const podcastSchema = new Schema(
     },
     thumbnailUrl: {
       type: String,
-      required: true,
     },
     fileUrl: {
       type: String,

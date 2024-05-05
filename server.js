@@ -13,7 +13,7 @@ const app = express();
 
 const authRoutes = require("./routes/auth");
 const adminRoutes = require("./routes/admin");
-const userRoutes = require("./routes/user");
+const userRoutes = require("./routes/podcast");
 
 const PORT = 3000;
 
@@ -22,7 +22,7 @@ const MONGODB_URL =
 
 const fileStorage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "/Files");
+    cb(null, "Files");
   },
   filename: (req, file, cb) => {
     cb(
@@ -32,23 +32,29 @@ const fileStorage = multer.diskStorage({
   },
 });
 
+const fileFilter = (req, file, cb) => {
+  //ACCEPT ALL TYPES OF FILES
+  cb(null, true);
+};
+
 app.use(cors());
 app.use(bodyParser.json());
 
 app.use(
   multer({
     storage: fileStorage,
+    fileFilter: fileFilter,
     limits: {
       fileSize: 50 * 1024 * 1024, // 50 MB IN BYTES
     },
   }).single("file")
 );
 
-app.use("/files", express.static(path.join(__dirname, "files")));
+app.use("/files", express.static(path.join(__dirname, "Files")));
 
 app.use("/auth", authRoutes);
 app.use("/admin", adminRoutes);
-app.use("/user", userRoutes);
+app.use("/home", userRoutes);
 mongoose
   .connect(MONGODB_URL)
   .then(() => {
