@@ -1,12 +1,18 @@
 const path = require("path");
+const fs = require("fs");
 
 const express = require("express");
 
 const cors = require("cors");
+const helmet = require("helmet");
+const compression = require("compression");
+const morgan = require("morgan");
 
 const bodyParser = require("body-parser");
 
 const mongoose = require("mongoose");
+const dotenv = require("dotenv");
+dotenv.config();
 const multer = require("multer");
 
 const app = express();
@@ -15,10 +21,11 @@ const authRoutes = require("./routes/auth");
 const adminRoutes = require("./routes/admin");
 const userRoutes = require("./routes/podcast");
 
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
+const CONNECTION = process.env.CONNECTION;
 
-const MONGODB_URL =
-  "mongodb+srv://Yaswanth:Yash1234@cluster0.hq3suhg.mongodb.net/podcastDb?retryWrites=true&w=majority&appName=Cluster0";
+// const MONGODB_URL =
+//   "mongodb+srv://Yaswanth:Yash1234@cluster0.hq3suhg.mongodb.net/podcastDb?retryWrites=true&w=majority&appName=Cluster0";
 
 const fileStorage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -36,6 +43,14 @@ const fileFilter = (req, file, cb) => {
   //ACCEPT ALL TYPES OF FILES
   cb(null, true);
 };
+
+const accessLogStream = fs.createWriteStream(
+  path.join(__dirname, "access.log"),
+  { flags: "a" }
+);
+app.use(helmet());
+app.use(compression());
+app.use(morgan("combined", { stream: accessLogStream }));
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -65,11 +80,11 @@ app.use((err, req, res, next) => {
 
 //CONNECTION TO MONGODB
 mongoose
-  .connect(MONGODB_URL)
+  .connect(CONNECTION)
   .then(() => {
     console.log("connected");
     app.listen(PORT, () => {
-      console.log("server is listening to port 3000");
+      console.log("server is listening to port" + PORT);
     });
   })
   .catch((err) => {

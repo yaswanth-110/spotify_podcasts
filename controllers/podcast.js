@@ -16,7 +16,7 @@ exports.getPodcasts = async (req, res, next) => {
     }
     res
       .status(200)
-      .json({ message: "Podcasts retrieved successfully", Podcasts: podcasts });
+      .json({ message: "Podcasts retrieved successfully", podcasts: podcasts });
   } catch (err) {
     console.log(err);
     next(err);
