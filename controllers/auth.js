@@ -31,7 +31,7 @@ exports.signup = async (req, res, next) => {
       userType: "user",
     });
     const userDoc = await user.save();
-    res.status(200).json({
+    return res.status(200).json({
       message: "user account created successfully",
       userId: userDoc._id,
     });
@@ -76,11 +76,7 @@ exports.login = async (req, res, next) => {
         userType: user.userType,
       });
     } else {
-      res.status(401).json({ message: "Not authorized" });
-      const error = new Error("Not authorized");
-      error.statusCode = 401;
-
-      throw error;
+      return res.status(401).json({ message: "Not authorized" });
     }
   } catch (err) {
     console.log(err);

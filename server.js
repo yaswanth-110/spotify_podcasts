@@ -56,7 +56,7 @@ app.use("/auth", authRoutes);
 app.use("/admin", adminRoutes);
 app.use("/home", userRoutes);
 
-//ERROR MIDDLEWARE
+//ERROR HANDLE MIDDLEWARE
 app.use((err, req, res, next) => {
   const status = err.statusCode || 500;
   const message = err.message;

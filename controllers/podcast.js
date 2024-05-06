@@ -12,7 +12,7 @@ exports.getPodcasts = async (req, res, next) => {
       .skip((number - 1) * SIZE_LIMIT)
       .limit(SIZE_LIMIT);
     if (podcasts.length === 0) {
-      res.status(400).json({ message: "No Podcasts are available" });
+      return res.status(400).json({ message: "No Podcasts are available" });
     }
     res
       .status(200)
@@ -35,7 +35,7 @@ exports.getPodcast = async (req, res, next) => {
       throw error;
     }
     res
-      .status(400)
+      .status(200)
       .json({ message: "podcast retrieved successfully", podcast: podcast });
   } catch (err) {
     console.log(err);
@@ -73,7 +73,7 @@ exports.getFavPodcasts = async (req, res, next) => {
     const userId = req.userId;
     const user = await favPodcast.find({ user: userId }).populate("podcast");
     if (user) {
-      res.status(200).json({
+      return res.status(200).json({
         message: "Favourite podcasts retrieved successfully",
         user: user,
       });
@@ -115,7 +115,7 @@ exports.increaseViewCount = async (req, res, next) => {
     const podcastId = req.params.podcastId;
     const podcast = await Podcast.findById(podcastId);
     if (!podcast) {
-      res.status(400).json({ message: "Podcast is not available" });
+      return res.status(400).json({ message: "Podcast is not available" });
     }
     podcast.views = viewCount + 1;
     await podcast.save();
@@ -125,3 +125,5 @@ exports.increaseViewCount = async (req, res, next) => {
     next(err);
   }
 };
+
+//GET SINGLE PODCAST CLICKING THE PODCAST AFTER SEARCHING WITH PODCAST NAME
