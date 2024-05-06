@@ -16,4 +16,16 @@ router.get("/fav-podcast", isAuth, userController.getFavPodcasts);
 
 router.get("/podcasts/search/:podParam", isAuth, userController.searchPodcast);
 
+router.post(
+  "/podcasts/addView/:podParam",
+  isAuth,
+  userController.increaseViewCount
+);
+
+router.get(
+  "/podcasts/trendingPods/:number",
+  isAuth,
+  userController.getTrendingPodcasts
+);
+
 module.exports = router;

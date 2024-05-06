@@ -126,4 +126,24 @@ exports.increaseViewCount = async (req, res, next) => {
   }
 };
 
-//GET SINGLE PODCAST CLICKING THE PODCAST AFTER SEARCHING WITH PODCAST NAME
+//GET TRENDING PODCASTS
+
+exports.getTrendingPodcasts = async (req, res, next) => {
+  try {
+    const number = req.params.number;
+    const SIZE_LIMIT = 10;
+    const podcasts = await Podcast.find()
+      .sort({ views: -1 })
+      .skip((number - 1) * SIZE_LIMIT)
+      .limit(SIZE_LIMIT);
+    if (podcasts.length === 0) {
+      return res.status(400).json({ message: "No Podcasts are available" });
+    }
+    res
+      .status(200)
+      .json({ message: "Podcasts retrieved successfully", podcasts: podcasts });
+  } catch (err) {
+    console.log(err);
+    next(err);
+  }
+};
