@@ -18,7 +18,7 @@ const userRoutes = require("./routes/podcast");
 const PORT = 3000;
 
 const MONGODB_URL =
-  "mongodb+srv://Yaswanth:Yash1234@cluster0.hq3suhg.mongodb.net/podcastDb?retryWrites=true&w=majority&appName=Cluster0";
+  "mongodb+srv://bojugusumanthkumar:mongodbdemo@cluster0.7psfsow.mongodb.net/synthwave";
 
 const fileStorage = multer.diskStorage({
   destination: (req, file, cb) => {

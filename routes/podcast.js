@@ -10,10 +10,20 @@ router.get("/podcasts/:number", userController.getPodcasts);
 
 router.get("/podcast/:podcastId", isAuth, userController.getPodcast);
 
-router.post("/podcasts/addToFav:podcastId", isAuth, userController.addPodToFav);
+router.post(
+  "/podcasts/addToFav/:podcastId",
+  isAuth,
+  userController.addPodToFav
+);
 
 router.get("/fav-podcast", isAuth, userController.getFavPodcasts);
 
 router.get("/podcasts/search/:podParam", isAuth, userController.searchPodcast);
+
+router.post(
+  "/podcasts/addView/:podcastId",
+  isAuth,
+  userController.increaseViewCount
+);
 
 module.exports = router;

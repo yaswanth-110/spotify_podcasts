@@ -7,6 +7,8 @@ exports.addPodcast = async (req, res, next) => {
     const category = req.body.category;
     const speaker = req.body.speaker;
     const file = req.file;
+    const thumbnailUrl = req.body.thumbnailUrl;
+
     console.log(file);
     if (!file) {
       const error = new Error("No file is uploaded");
@@ -24,7 +26,7 @@ exports.addPodcast = async (req, res, next) => {
       description: description,
       category: category,
       speaker: speaker,
-      thumbnailUrl: " ",
+      thumbnailUrl: thumbnailUrl,
       fileUrl: fileUrl,
     });
 
