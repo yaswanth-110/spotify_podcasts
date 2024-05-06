@@ -4,10 +4,7 @@
   "description": "This is the backend for flipr application ",
   "main": "index.js",
   "scripts": {
-<<<<<<< HEAD
     "test": "echo \"Error: no test specified\" && exit 1",
-=======
->>>>>>> 6471fc37f724bcb042d091afab19f419806a8ce3
     "start": "node server.js"
   },
   "author": "Yaswanth",
