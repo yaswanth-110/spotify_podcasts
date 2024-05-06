@@ -17,7 +17,7 @@ router.get("/fav-podcast", isAuth, userController.getFavPodcasts);
 router.get("/podcasts/search/:podParam", isAuth, userController.searchPodcast);
 
 router.post(
-  "/podcasts/addView/:podParam",
+  "/podcasts/addView/:podcastId",
   isAuth,
   userController.increaseViewCount
 );

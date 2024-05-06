@@ -111,13 +111,12 @@ exports.searchPodcast = async (req, res, next) => {
 
 exports.increaseViewCount = async (req, res, next) => {
   try {
-    const viewCount = req.params.viewCount;
     const podcastId = req.params.podcastId;
     const podcast = await Podcast.findById(podcastId);
     if (!podcast) {
       return res.status(400).json({ message: "Podcast is not available" });
     }
-    podcast.views = viewCount + 1;
+    podcast.views += 1;
     await podcast.save();
     res.status(200).json({ message: "viewcount increased", podcast: podcast });
   } catch (err) {

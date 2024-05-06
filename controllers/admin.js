@@ -6,6 +6,7 @@ exports.addPodcast = async (req, res, next) => {
     const description = req.body.description;
     const category = req.body.category;
     const speaker = req.body.speaker;
+    const thumbnailUrl = req.body.thumbnailUrl;
     const file = req.file;
     console.log(file);
     if (!file) {
@@ -24,7 +25,7 @@ exports.addPodcast = async (req, res, next) => {
       description: description,
       category: category,
       speaker: speaker,
-      thumbnailUrl: " ",
+      thumbnailUrl: thumbnailUrl,
       fileUrl: fileUrl,
     });
 
