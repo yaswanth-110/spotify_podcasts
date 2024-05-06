@@ -31,7 +31,7 @@ exports.signup = async (req, res, next) => {
       userType: "user",
     });
     const userDoc = await user.save();
-    return res.status(200).json({
+    res.status(200).json({
       message: "user account created successfully",
       userId: userDoc._id,
     });
