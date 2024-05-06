@@ -1,6 +1,6 @@
 const Podcast = require("../models/podcastDetails.js");
 
-const favPodcast = require("../models/favouriteSchema.js");
+const FavPodcast = require("../models/favouriteSchema.js");
 
 //GET ALL PODCASTS
 
@@ -52,7 +52,7 @@ exports.addPodToFav = async (req, res, next) => {
   try {
     const podcastId = req.params.podcastId;
     const userId = req.userId;
-    const favPodcast = new favPodcast({
+    const favPodcast = new FavPodcast({
       user: userId,
       podcast: podcastId,
     });
@@ -71,7 +71,7 @@ exports.addPodToFav = async (req, res, next) => {
 exports.getFavPodcasts = async (req, res, next) => {
   try {
     const userId = req.userId;
-    const user = await favPodcast.find({ user: userId }).populate("podcast");
+    const user = await FavPodcast.find({ user: userId }).populate("podcast");
     if (user) {
       return res.status(200).json({
         message: "Favourite podcasts retrieved successfully",
