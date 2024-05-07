@@ -77,6 +77,10 @@ exports.getFavPodcasts = async (req, res, next) => {
         message: "Favourite podcasts retrieved successfully",
         user: user,
       });
+    } else {
+      return res
+        .status(400)
+        .json({ message: "No favourites podcasts are available" });
     }
   } catch (err) {
     console.log(err);
