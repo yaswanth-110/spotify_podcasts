@@ -150,3 +150,31 @@ exports.getTrendingPodcasts = async (req, res, next) => {
     next(err);
   }
 };
+
+// DELETE PODCAST FROM FAVOURITES
+
+exports.delPodFromFav = async (req, res, next) => {
+  try {
+    const podcastId = req.params.podcastId;
+    const userId = req.userId;
+    const favPodcast = await FavPodcast.findOneAndDelete({
+      $and: [
+        { user: userId },
+        {
+          podcast: podcastId,
+        },
+      ],
+    });
+    if (!favPodcast) {
+      return res
+        .status(400)
+        .json({ message: "This podcast is not present in favourites" });
+    }
+    res
+      .status(200)
+      .json({ message: "podcast deleted successfully from favourites" });
+  } catch (err) {
+    console.log(err);
+    next(err);
+  }
+};
