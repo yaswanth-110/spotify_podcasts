@@ -1,6 +1,6 @@
 const Podcast = require("../models/podcastDetails.js");
 
-const favPodcast = require("../models/favouriteSchema.js");
+const FavPodcast = require("../models/favouriteSchema.js");
 
 //GET ALL PODCASTS
 
@@ -16,7 +16,7 @@ exports.getPodcasts = async (req, res, next) => {
     }
     res
       .status(200)
-      .json({ message: "Podcasts retrieved successfully", Podcasts: podcasts });
+      .json({ message: "Podcasts retrieved successfully", podcasts: podcasts });
   } catch (err) {
     console.log(err);
     next(err);
@@ -52,7 +52,7 @@ exports.addPodToFav = async (req, res, next) => {
   try {
     const podcastId = req.params.podcastId;
     const userId = req.userId;
-    const favPodcast = new favPodcast({
+    const favPodcast = new FavPodcast({
       user: userId,
       podcast: podcastId,
     });
@@ -71,7 +71,7 @@ exports.addPodToFav = async (req, res, next) => {
 exports.getFavPodcasts = async (req, res, next) => {
   try {
     const userId = req.userId;
-    const user = await favPodcast.find({ user: userId }).populate("podcast");
+    const user = await FavPodcast.find({ user: userId }).populate("podcast");
     if (user) {
       return res.status(200).json({
         message: "Favourite podcasts retrieved successfully",
@@ -111,16 +111,36 @@ exports.searchPodcast = async (req, res, next) => {
 
 exports.increaseViewCount = async (req, res, next) => {
   try {
-    // const viewCount = req.params.viewCount;
     const podcastId = req.params.podcastId;
     const podcast = await Podcast.findById(podcastId);
     if (!podcast) {
       return res.status(400).json({ message: "Podcast is not available" });
     }
-    // podcast.views = viewCount + 1;
     podcast.views += 1;
     await podcast.save();
     res.status(200).json({ message: "viewcount increased", podcast: podcast });
+  } catch (err) {
+    console.log(err);
+    next(err);
+  }
+};
+
+//GET TRENDING PODCASTS
+
+exports.getTrendingPodcasts = async (req, res, next) => {
+  try {
+    const number = req.params.number;
+    const SIZE_LIMIT = 10;
+    const podcasts = await Podcast.find()
+      .sort({ views: -1 })
+      .skip((number - 1) * SIZE_LIMIT)
+      .limit(SIZE_LIMIT);
+    if (podcasts.length === 0) {
+      return res.status(400).json({ message: "No Podcasts are available" });
+    }
+    res
+      .status(200)
+      .json({ message: "Podcasts retrieved successfully", podcasts: podcasts });
   } catch (err) {
     console.log(err);
     next(err);

@@ -6,7 +6,7 @@ const isAuth = require("../middlewares/isauth");
 
 const userController = require("../controllers/podcast");
 
-router.get("/podcasts/:number", userController.getPodcasts);
+router.get("/podcasts/:number", isAuth, userController.getPodcasts);
 
 router.get("/podcast/:podcastId", isAuth, userController.getPodcast);
 
@@ -24,6 +24,12 @@ router.post(
   "/podcasts/addView/:podcastId",
   isAuth,
   userController.increaseViewCount
+);
+
+router.get(
+  "/podcasts/trendingPods/:number",
+  isAuth,
+  userController.getTrendingPodcasts
 );
 
 module.exports = router;
