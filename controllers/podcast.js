@@ -158,12 +158,8 @@ exports.delPodFromFav = async (req, res, next) => {
     const podcastId = req.params.podcastId;
     const userId = req.userId;
     const favPodcast = await FavPodcast.findOneAndDelete({
-      $and: [
-        { user: userId },
-        {
-          podcast: podcastId,
-        },
-      ],
+      user: userId,
+      podcast: podcastId,
     });
     if (!favPodcast) {
       return res
